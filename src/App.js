@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [notificationMessage, setNotificationMessage] = useState('')
@@ -10,6 +11,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [createBlogVisible, setCreateBlogVisible] = useState(false)
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
@@ -137,15 +139,22 @@ const App = () => {
   }
 
   const blogForm = () => {
+    const hideWhenVisible = { display: createBlogVisible ? 'none' : '' }
+    const showWhenVisible = { display: createBlogVisible ? '' : 'none' }
     return (
     <div>
     <h2>create new</h2>
-    <form onSubmit={addBlog}>
-      <div>title: <input type='text' value={newBlog.title} name='title' onChange={handleBlogChange}/></div>
-      <div>author: <input type='text' value={newBlog.author} name='author' onChange={handleBlogChange}/></div>
-      <div>url: <input type='text' value={newBlog.url} name='url' onChange={handleBlogChange}/></div>
-      <button type="submit">create</button>
-    </form>
+    <div style={hideWhenVisible}>
+      <button onClick={() => setCreateBlogVisible(true)}>create blog</button>
+    </div>
+    <div style={showWhenVisible}>
+      <BlogForm 
+      newBlog={newBlog}
+      handleBlogChange={handleBlogChange}
+      handleSubmit={addBlog}
+      />
+      <button onClick={() => setCreateBlogVisible(false)}>cancel</button>
+    </div>
     </div>
     )
   }
