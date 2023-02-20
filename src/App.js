@@ -151,6 +151,9 @@ const App = () => {
   }
 
   const Notification = ({ message, isSuccess }) => {
+    if (message === null) {
+      return null
+    }
     const className = isSuccess ? 'success' : 'failure'
     return (
       <div className={`notification ${className}`}>
@@ -161,10 +164,11 @@ const App = () => {
 
   return (
     <div>
+      <div>{Notification({ message: notificationMessage, isSuccess: isNotificationSuccess })}</div>
+
       <h2>log in to application</h2>
       {!user && loginForm()}
       <h2>blogs</h2>
-
       {user && <div>
         <p>{user.name} logged in {logoutButton()}</p>
         <div>{blogForm()}</div>      
