@@ -119,10 +119,8 @@ const App = () => {
         setNotificationMessage(null);
         setIsNotificationSuccess(false);
       }, 5000);
-      throw error;
     }
   };
-  
 
   const Notification = ({ message, isSuccess }) => {
     if (message === null) {
@@ -151,9 +149,22 @@ const App = () => {
           <Togglable buttonLabel="new blog">
             <BlogForm createBlog={addBlog} />
           </Togglable>
+          
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+           <div key={blog.id}>
+           <Blog blog={blog} />
+           <Togglable buttonLabel="view">
+             <div>
+               <div>{blog.url}</div>
+               <div>
+                 likes {blog.likes} <button>like</button>
+               </div>
+               <div> {user.name} </div>
+             </div>
+           </Togglable>
+         </div>
           ))}
+          
         </div>
       )}
     </div>
