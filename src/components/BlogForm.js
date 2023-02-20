@@ -1,41 +1,41 @@
-const BlogForm = ({
-  handleSubmit,
-  handleBlogChange,
-  newBlog
-}) => {
+const BlogForm = ({ onSubmit, handleChange, newBlog }) => {
   return (
     <div>
-      <h2>Create new</h2>
+      <h2>Create a new blog</h2>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={onSubmit}>
         <div>
-          title
+          title:
           <input
+            type="text"
             value={newBlog.title}
             name="title"
-            onChange={handleBlogChange}
+            onChange={handleChange}
           />
         </div>
         <div>
-          author
+          author:
           <input
+            type="text"
             value={newBlog.author}
             name="author"
-            onChange={handleBlogChange}
+            onChange={handleChange}
           />
         </div>
         <div>
-          url
+          url:
           <input
+            type="text"
             value={newBlog.url}
             name="url"
-            onChange={handleBlogChange}
+            onChange={handleChange}
           />
         </div>
         <button type="submit">create</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default BlogForm
+

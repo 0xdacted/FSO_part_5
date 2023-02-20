@@ -138,26 +138,6 @@ const App = () => {
     }))
   }
 
-  const blogForm = () => {
-    const hideWhenVisible = { display: createBlogVisible ? 'none' : '' }
-    const showWhenVisible = { display: createBlogVisible ? '' : 'none' }
-    return (
-    <div>
-    <h2>create new</h2>
-    <div style={hideWhenVisible}>
-      <button onClick={() => setCreateBlogVisible(true)}>create blog</button>
-    </div>
-    <div style={showWhenVisible}>
-      <BlogForm 
-      newBlog={newBlog}
-      handleBlogChange={handleBlogChange}
-      handleSubmit={addBlog}
-      />
-      <button onClick={() => setCreateBlogVisible(false)}>cancel</button>
-    </div>
-    </div>
-    )
-  }
 
   const Notification = ({ message, isSuccess }) => {
     if (message === null) {
@@ -180,7 +160,7 @@ const App = () => {
       <h2>blogs</h2>
       {user && <div>
         <p>{user.name} logged in {logoutButton()}</p>
-        <div>{blogForm()}</div>      
+        <BlogForm onSubmit={addBlog} handleChange={handleBlogChange} newBlog={newBlog}/>
         {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
