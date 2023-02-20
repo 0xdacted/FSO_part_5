@@ -12,7 +12,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [createBlogVisible, setCreateBlogVisible] = useState(false)
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
@@ -96,16 +95,7 @@ const App = () => {
     )
   }
 
-  const addBlog = async (event) => {
-    event.preventDefault();
-  
-    const blogObject = {
-      title: newBlog.title,
-      author: newBlog.author,
-      url: newBlog.url,
-      user: user._id
-    };
-  
+  const addBlog = async (blogObject) => {
     try {
       const returnedBlog = await blogService.create(blogObject);
       setBlogs(blogs.concat(returnedBlog));
@@ -114,31 +104,25 @@ const App = () => {
         author: '',
         url: '',
         user: null, 
-      })
-      setNotificationMessage(`New blog "${returnedBlog.title}" added!`)
-      setIsNotificationSuccess(true)
+      });
+      setNotificationMessage(`New blog "${returnedBlog.title}" added!`);
+      setIsNotificationSuccess(true);
       setTimeout(() => {
         setNotificationMessage(null);
         setIsNotificationSuccess(false);
-      }, 5000)
+      }, 5000);
+      return returnedBlog;
     } catch (error) {
-      setNotificationMessage('Error adding blog.')
-      setIsNotificationSuccess(false)
+      setNotificationMessage('Error adding blog.');
+      setIsNotificationSuccess(false);
       setTimeout(() => {
         setNotificationMessage(null);
         setIsNotificationSuccess(false);
-      }, 5000)
+      }, 5000);
+      throw error;
     }
-  }
+  };
   
-  const handleBlogChange = (event) => {
-    const { name, value } = event.target
-    setNewBlog(prevState => ({
-      ...prevState,
-      [name]: value
-    }))
-  }
-
 
   const Notification = ({ message, isSuccess }) => {
     if (message === null) {
@@ -155,21 +139,24 @@ const App = () => {
   return (
     <div>
       <div>{Notification({ message: notificationMessage, isSuccess: isNotificationSuccess })}</div>
-
+  
       <h2>log in to application</h2>
       {!user && loginForm()}
       <h2>blogs</h2>
-      {user && <div>
-        <p>{user.name} logged in {logoutButton()}</p>
-        <Togglable buttonLabel="new blog">
-          <BlogForm onSubmit={addBlog} handleChange={handleBlogChange} newBlog={newBlog}/>
-        </Togglable>
-        {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+      {user && (
+        <div>
+          <p>
+            {user.name} logged in {logoutButton()}
+          </p>
+          <Togglable buttonLabel="new blog">
+            <BlogForm createBlog={addBlog} />
+          </Togglable>
+          {blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+          ))}
+        </div>
       )}
-      </div>
-    }
     </div>
-  )
+  );
   }
 export default App
