@@ -105,7 +105,6 @@ const App = () => {
     try {
       blogObject.user = user;
       const returnedBlog = await blogService.create(blogObject);
-      returnedBlog.user = user
       setBlogs(blogs.concat(returnedBlog));
       setNewBlog({ 
         title: '',
