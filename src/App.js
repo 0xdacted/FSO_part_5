@@ -9,6 +9,7 @@ const App = () => {
   const [notificationMessage, setNotificationMessage] = useState('')
   const [isNotificationSuccess, setIsNotificationSuccess] = useState('')
   const [blogs, setBlogs] = useState([])
+  const [sortedBlogs, setSortedBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -25,6 +26,11 @@ const App = () => {
       setBlogs( blogs )
     )  
   }, [])
+
+  useEffect(() => {
+    const sorted = [...blogs].sort((a, b) => b.likes - a.likes)
+    setSortedBlogs(sorted)
+  }, [blogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -161,7 +167,7 @@ const App = () => {
             <BlogForm createBlog={addBlog} user={user} />
           </Togglable>
           
-          {blogs.map((blog) => (
+          {sortedBlogs.map((blog) => (
            <div key={blog.id}>
            <Blog blog={blog} />
            <Togglable buttonLabel="view">
