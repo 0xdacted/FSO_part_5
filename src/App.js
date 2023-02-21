@@ -139,6 +139,29 @@ const App = () => {
     setBlogs(blogs.map((b) => (b.id === updatedBlog.id ? response : b)))
   }
 
+  const handleDeleteClick = async (blog) => {
+    if (window.confirm(`remove blog ${blog.title} by ${blog.author}?`)) {
+      try {
+        await blogService.remove(blog.id);
+        setBlogs(blogs.filter((b) => b.id !== blog.id));
+        setNotificationMessage(`Blog "${blog.title}" removed!`);
+        setIsNotificationSuccess(true);
+        setTimeout(() => {
+          setNotificationMessage(null);
+          setIsNotificationSuccess(false);
+        }, 5000);
+      } catch (error) {
+        setNotificationMessage('Failed to remove the blog.');
+        setIsNotificationSuccess(false);
+        setTimeout(() => {
+          setNotificationMessage(null);
+          setIsNotificationSuccess(false);
+        }, 5000);
+      }
+    }
+  }
+  
+
   const Notification = ({ message, isSuccess }) => {
     if (message === null) {
       return null
@@ -177,6 +200,9 @@ const App = () => {
                  likes {blog.likes} <button onClick = {() => handleLikeClick(blog)}>like</button>
                </div>
                <div>{blog.user.username}</div> 
+               {blog.user.username === user.username &&
+               <div><button onClick = {() => handleDeleteClick(blog)}>remove</button></div>
+               }
              </div>
            </Togglable>
          </div>
