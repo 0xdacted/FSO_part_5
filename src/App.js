@@ -95,15 +95,17 @@ const App = () => {
     )
   }
 
-  const addBlog = async (blogObject) => {
+  const addBlog = async (blogObject, user) => {
     try {
+      blogObject.user = user;
       const returnedBlog = await blogService.create(blogObject);
+      returnedBlog.user = user
       setBlogs(blogs.concat(returnedBlog));
       setNewBlog({ 
         title: '',
         author: '',
         url: '',
-        user: null, 
+        user: null,
       });
       setNotificationMessage(`New blog "${returnedBlog.title}" added!`);
       setIsNotificationSuccess(true);
@@ -144,10 +146,10 @@ const App = () => {
       {user && (
         <div>
           <p>
-            {user.name} logged in {logoutButton()}
+            {user.username} logged in {logoutButton()}
           </p>
           <Togglable buttonLabel="new blog">
-            <BlogForm createBlog={addBlog} />
+            <BlogForm createBlog={addBlog} user={user} />
           </Togglable>
           
           {blogs.map((blog) => (
@@ -159,7 +161,7 @@ const App = () => {
                <div>
                  likes {blog.likes} <button>like</button>
                </div>
-               <div> {user.name} </div>
+               <div>{blog.user.username}</div> 
              </div>
            </Togglable>
          </div>
