@@ -122,7 +122,16 @@ const App = () => {
         setIsNotificationSuccess(false);
       }, 5000);
     }
-  };
+  }
+
+  const handleLikeClick = async (blog) => {
+    const updatedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+    }
+    const response = await blogService.update(updatedBlog.id, updatedBlog)
+    setBlogs(blogs.map((b) => (b.id === updatedBlog.id ? response : b)))
+  }
 
   const Notification = ({ message, isSuccess }) => {
     if (message === null) {
@@ -159,7 +168,7 @@ const App = () => {
              <div>
                <div>{blog.url}</div>
                <div>
-                 likes {blog.likes} <button>like</button>
+                 likes {blog.likes} <button onClick = {() => handleLikeClick(blog)}>like</button>
                </div>
                <div>{blog.user.username}</div> 
              </div>
