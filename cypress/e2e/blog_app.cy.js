@@ -1,3 +1,4 @@
+import '../support/commands'
 describe('Blog app', function()  {
   const user = {
     name: 'John Doe',
@@ -38,13 +39,13 @@ describe('Blog app', function()  {
     const newBlog = {
       title: 'Test Blog',
       author: 'Test Author',
-      url: 'http://testblog.com'
+      url: 'http://testblog.com',
+      likes: 0,
+  
     }
       
     beforeEach(function() {
-      cy.get('input#username-input').type(user.username)
-      cy.get('input#password-input').type(user.password)
-      cy.get('button#login-button').click()
+      cy.login({ username: user.username, password: user.password })
     })
 
     it('A blog can be created', function() {
@@ -58,7 +59,18 @@ describe('Blog app', function()  {
       cy.contains(newBlog.author).should('be.visible')
       })
 
-      it('A blog can be liked')
+    it.only('A blog can be liked', function() {
+      cy.get('button#new-blog', { timeout: 10000 }).click()
+      cy.get('input#title-input').type(newBlog.title)
+      cy.get('input#author-input').type(newBlog.author)
+      cy.get('input#url-input').type(newBlog.url)
+      cy.get('button#create-blog').click()
+
+      cy.contains(newBlog.title, { timeout: 10000 }).parent().find('button[id^="togglable-"]', { timeout: 10000 }).click()
+      cy.wait(500)
+      cy.contains(newBlog.title).parent().find('button#like-click').click()
+      cy.contains(`likes ${newBlog.likes + 1}`)
+      })
     })
   })
 

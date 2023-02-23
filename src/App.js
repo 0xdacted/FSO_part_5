@@ -192,7 +192,7 @@ const App = () => {
           {sortedBlogs.map((blog) => (
            <div key={blog.id}>
            <Blog blog={blog} />
-           <Togglable id="view-details" buttonLabel="view">
+           <Togglable id={`togglable-${Math.floor(Math.random() * 100000)}`} buttonLabel="view">
              <div>
                <div>{blog.url}</div>
                <div>
