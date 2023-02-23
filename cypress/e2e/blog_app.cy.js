@@ -57,6 +57,8 @@ describe('Blog app', function()  {
       cy.contains(newBlog.title).should('be.visible')
       cy.contains(newBlog.author).should('be.visible')
       })
+
+      it('A blog can be liked')
     })
   })
 

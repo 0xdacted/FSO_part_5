@@ -185,18 +185,18 @@ const App = () => {
           <p>
             {user.username} logged in {logoutButton()}
           </p>
-          <Togglable buttonLabel="new blog">
+          <Togglable id="new-blog" buttonLabel="new blog">
             <BlogForm createBlog={addBlog} user={user} />
           </Togglable>
           
           {sortedBlogs.map((blog) => (
            <div key={blog.id}>
            <Blog blog={blog} />
-           <Togglable buttonLabel="view">
+           <Togglable id="view-details" buttonLabel="view">
              <div>
                <div>{blog.url}</div>
                <div>
-                 likes {blog.likes} <button onClick = {() => handleLikeClick(blog)}>like</button>
+                 likes {blog.likes} <button id="like-click" onClick = {() => handleLikeClick(blog)}>like</button>
                </div>
                <div>{blog.user.username}</div> 
                {blog.user.username === user.username &&
