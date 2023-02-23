@@ -72,7 +72,7 @@ const App = () => {
 
   const loginForm = () => {
     return (
-    <form onSubmit={handleLogin}>
+    <form id='login-form' onSubmit={handleLogin}>
         <div>
           username
           <input type='text' value={username} name='Username' 
