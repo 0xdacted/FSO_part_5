@@ -48,7 +48,7 @@ describe('Blog app', function()  {
     })
 
     it('A blog can be created', function() {
-      cy.contains('button#new-blog').click()
+      cy.get('button#new-blog', { timeout: 10000 }).click()
       cy.get('input#title-input').type(newBlog.title)
       cy.get('input#author-input').type(newBlog.author)
       cy.get('input#url-input').type(newBlog.url)
