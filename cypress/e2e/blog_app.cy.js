@@ -33,4 +33,30 @@ describe('Blog app', function()  {
       cy.get('button#logout-button').should('not.exist')
     })
   })
-})
+
+  describe('When logged in', function() {
+    const newBlog = {
+      title: 'Test Blog',
+      author: 'Test Author',
+      url: 'http://testblog.com'
+    }
+      
+    beforeEach(function() {
+      cy.get('input#username-input').type(user.username)
+      cy.get('input#password-input').type(user.password)
+      cy.get('button#login-button').click()
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('button#new-blog').click()
+      cy.get('input#title-input').type(newBlog.title)
+      cy.get('input#author-input').type(newBlog.author)
+      cy.get('input#url-input').type(newBlog.url)
+      cy.get('button#create-blog').click()
+
+      cy.contains(newBlog.title).should('be.visible')
+      cy.contains(newBlog.author).should('be.visible')
+      })
+    })
+  })
+
