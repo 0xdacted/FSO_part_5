@@ -25,7 +25,6 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('login', ({ username, password }) => {
-  console.log('username, password')
   cy.request('POST', 'http://localhost:3001/api/login', {
     username, password
   }).then(response => {
@@ -35,12 +34,10 @@ Cypress.Commands.add('login', ({ username, password }) => {
 })
 
 Cypress.Commands.add('createBlog', (blog) => {
-  cy.request({
-    method: 'POST',
-    url: 'http://localhost:3001/api/blogs',
-    body: blog,
-    headers: {
-      'Authorization': `Bearer ${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
-    }
-  })
+  cy.get('button#new-blog', { timeout: 10000 }).click()
+  cy.get('input#title-input').type(blog.title)
+  cy.get('input#author-input').type(blog.author)
+  cy.get('input#url-input').type(blog.url)
+  cy.get('button#create-blog').click()
 })
+

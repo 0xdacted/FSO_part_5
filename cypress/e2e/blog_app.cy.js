@@ -49,22 +49,14 @@ describe('Blog app', function()  {
     })
 
     it('A blog can be created', function() {
-      cy.get('button#new-blog', { timeout: 10000 }).click()
-      cy.get('input#title-input').type(newBlog.title)
-      cy.get('input#author-input').type(newBlog.author)
-      cy.get('input#url-input').type(newBlog.url)
-      cy.get('button#create-blog').click()
+      cy.createBlog(newBlog)
 
       cy.contains(newBlog.title).should('be.visible')
       cy.contains(newBlog.author).should('be.visible')
       })
 
     it.only('A blog can be liked', function() {
-      cy.get('button#new-blog', { timeout: 10000 }).click()
-      cy.get('input#title-input').type(newBlog.title)
-      cy.get('input#author-input').type(newBlog.author)
-      cy.get('input#url-input').type(newBlog.url)
-      cy.get('button#create-blog').click()
+      cy.createBlog(newBlog)
 
       cy.contains(newBlog.title, { timeout: 10000 }).parent().find('button[id^="togglable-"]', { timeout: 10000 }).click()
       cy.wait(500)
