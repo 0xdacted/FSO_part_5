@@ -75,16 +75,16 @@ const App = () => {
     <form id='login-form' onSubmit={handleLogin}>
         <div>
           username
-          <input type='text' value={username} name='Username' 
+          <input id='username-input' type='text' value={username} name='Username' 
           onChange={({ target }) => setUsername(target.value)} 
           />
         </div>
         <div>
           password
-          <input type='password' value={password} name='Password'
+          <input id='password-input' type='password' value={password} name='Password'
           onChange={({ target }) => setPassword(target.value)}
           />
-          <button type="submit">login</button>
+          <button id='login-button' type="submit">login</button>
         </div>
       </form>
     )
@@ -97,7 +97,7 @@ const App = () => {
 
   const logoutButton = () => {
     return (
-    <button onClick={handleLogout}>Log out</button>
+    <button id="logout-button" onClick={handleLogout}>Log out</button>
     )
   }
 
