@@ -39,5 +39,6 @@ Cypress.Commands.add('createBlog', (blog) => {
   cy.get('input#author-input').type(blog.author)
   cy.get('input#url-input').type(blog.url)
   cy.get('button#create-blog').click()
+  cy.visit('http://localhost:3000')
 })
 

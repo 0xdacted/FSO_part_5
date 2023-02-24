@@ -36,33 +36,42 @@ describe('Blog app', function()  {
   })
 
   describe('When logged in', function() {
+    const user = {
+      name: 'John Doe',
+      username: 'johndoe',
+      password: 'password'
+    }
+    
     const newBlog = {
       title: 'Test Blog',
       author: 'Test Author',
       url: 'http://testblog.com',
       likes: 0,
-  
+      user: user
     }
-      
+
     beforeEach(function() {
       cy.login({ username: user.username, password: user.password })
+      cy.createBlog(newBlog)
     })
 
     it('A blog can be created', function() {
-      cy.createBlog(newBlog)
-
       cy.contains(newBlog.title).should('be.visible')
       cy.contains(newBlog.author).should('be.visible')
       })
 
-    it.only('A blog can be liked', function() {
-      cy.createBlog(newBlog)
-
+    it('A blog can be liked', function() {
       cy.contains(newBlog.title, { timeout: 10000 }).parent().find('button[id^="togglable-"]', { timeout: 10000 }).click()
-      cy.wait(500)
       cy.contains(newBlog.title).parent().find('button#like-click').click()
       cy.contains(`likes ${newBlog.likes + 1}`)
       })
+  
+    it('User can delete a blog they created', function() {
+      console.log(newBlog.user.username, user.username)
+      cy.contains(newBlog.title, { timeout: 10000 }).parent().find('button[id^="togglable-"]', { timeout: 10000 }).click()
+      cy.contains(newBlog.title).parent().find('button#remove-click', { timeout: 10000 }).click()
+      cy.contains(newBlog.title, { timeout: 51000 }).should('not.exist')
+     })
     })
   })
 

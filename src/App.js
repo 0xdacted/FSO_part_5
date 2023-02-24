@@ -199,9 +199,10 @@ const App = () => {
                  likes {blog.likes} <button id="like-click" onClick = {() => handleLikeClick(blog)}>like</button>
                </div>
                <div>{blog.user.username}</div> 
-               {blog.user.username === user.username &&
-               <div><button onClick = {() => handleDeleteClick(blog)}>remove</button></div>
+               {blog.user.username === user.username && 
+               <button id="remove-click" onClick = {() => handleDeleteClick(blog)}>remove</button>
                }
+               
              </div>
            </Togglable>
          </div>
