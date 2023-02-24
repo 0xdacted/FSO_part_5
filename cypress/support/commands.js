@@ -42,3 +42,4 @@ Cypress.Commands.add('createBlog', (blog) => {
   cy.visit('http://localhost:3000')
 })
 
+

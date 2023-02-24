@@ -36,12 +36,11 @@ describe('Blog app', function()  {
   })
 
   describe('When logged in', function() {
-    const user = {
-      name: 'John Doe',
-      username: 'johndoe',
+    const user2 = {
+      name: 'John Robinson',
+      username: 'johnrobinson',
       password: 'password'
     }
-    
     const newBlog = {
       title: 'Test Blog',
       author: 'Test Author',
@@ -67,10 +66,18 @@ describe('Blog app', function()  {
       })
   
     it('User can delete a blog they created', function() {
-      console.log(newBlog.user.username, user.username)
       cy.contains(newBlog.title, { timeout: 10000 }).parent().find('button[id^="togglable-"]', { timeout: 10000 }).click()
       cy.contains(newBlog.title).parent().find('button#remove-click', { timeout: 10000 }).click()
       cy.contains(newBlog.title, { timeout: 51000 }).should('not.exist')
+     })
+
+    it('User cannot see delete button for blogs they did not create', function() {
+      cy.request('POST', 'http://localhost:3001/api/users', user2)
+      cy.get('#logout-button').click()
+      cy.visit('http://localhost:3000')
+      cy.login({ username: user2.username, password: user2.password})
+      cy.contains(newBlog.title, { timeout: 10000 }).parent().find('button[id^="togglable-"]', { timeout: 10000 }).click()
+      cy.contains(newBlog.title).parent().find('button#remove-click', { timeout: 10000 }).should('not.exist')
      })
     })
   })
