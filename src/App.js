@@ -190,7 +190,7 @@ const App = () => {
           </Togglable>
           
           {sortedBlogs.map((blog) => (
-           <div key={blog.id}>
+           <div key={blog.id} className="blog">
            <Blog blog={blog} />
            <Togglable id={`togglable-${Math.floor(Math.random() * 100000)}`} buttonLabel="view">
              <div>

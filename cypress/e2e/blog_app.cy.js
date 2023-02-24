@@ -51,7 +51,7 @@ describe('Blog app', function()  {
 
     beforeEach(function() {
       cy.login({ username: user.username, password: user.password })
-      cy.createBlog(newBlog)
+      cy.createBlog({ title: newBlog.title, author: newBlog.author, url: newBlog.url, likes: newBlog.likes, user: newBlog.user })
     })
 
     it('A blog can be created', function() {
@@ -79,6 +79,43 @@ describe('Blog app', function()  {
       cy.contains(newBlog.title, { timeout: 10000 }).parent().find('button[id^="togglable-"]', { timeout: 10000 }).click()
       cy.contains(newBlog.title).parent().find('button#remove-click', { timeout: 10000 }).should('not.exist')
      })
+    })
+
+    describe('Blog ordering', function() {
+      const blog1 = {
+        title: 'First Blog',
+        author: 'Test Author',
+        url: 'http://testblog.com',
+        likes: 1000,
+        user: user
+      }
+
+      const blog2 = {
+        title: 'Second Blog',
+        author: 'Test Author',
+        url: 'http://testblog.com',
+        likes: 999,
+        user: user
+      }
+
+      const blog3 = {
+        title: 'Third Blog',
+        author: 'Test Author',
+        url: 'http://testblog.com',
+        likes: 998,
+        user: user
+      }
+      beforeEach(function() {
+        cy.login({ username: user.username, password: user.password })
+        cy.createBlog({ title: blog3.title, author: blog3.author, url: blog3.url, likes: blog3.likes, user: blog3.user })
+        cy.createBlog({ title: blog2.title, author: blog2.author, url: blog2.url, likes: blog2.likes, user: blog2.user })
+        cy.createBlog({ title: blog1.title, author: blog1.author, url: blog1.url, likes: blog1.likes, user: blog1.user })
+      })
+      it('Shows the blogs in order of their likes', function() {
+        cy.get('.blog').eq(0).should('contain', 'First Blog')
+        cy.get('.blog').eq(1).should('contain', 'Second Blog')
+        cy.get('.blog').eq(2).should('contain', 'Third Blog')
+      })
     })
   })
 
