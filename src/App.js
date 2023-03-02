@@ -54,18 +54,26 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-      setNotificationMessage(`Welcome ${user.name}!`)
-      setIsNotificationSuccess(true)
+      dispatch({ 
+        type: SET_NOTIFICATION,
+        payload: {
+          message: `Welcome ${user.name}.`,
+          isSuccess: true 
+        }
+        })
       setTimeout(() => {
-        setNotificationMessage(null)
-        setIsNotificationSuccess(false)
+        dispatch({type: CLEAR_NOTIFICATION})
       }, 5000)
     } catch (exception) {
-      setNotificationMessage('Wrong credentials')
-      setIsNotificationSuccess(false)
+      dispatch({ 
+        type: SET_NOTIFICATION,
+        payload: {
+          message: 'Wrong credentials.',
+          isSuccess: false 
+        }
+        })
       setTimeout(() => {
-        setNotificationMessage(null)
-        setIsNotificationSuccess(false)
+        dispatch({type: CLEAR_NOTIFICATION})
       }, 5000)
     }
     console.log('logging in with', username, password)
@@ -164,18 +172,26 @@ const App = () => {
       try {
         await blogService.remove(blog.id)
         setBlogs(blogs.filter((b) => b.id !== blog.id))
-        setNotificationMessage(`Blog "${blog.title}" removed!`)
-        setIsNotificationSuccess(true)
+        dispatch({ 
+          type: SET_NOTIFICATION,
+          payload: {
+            message: `Blog "${blog.title}" removed!`,
+            isSuccess: true 
+          }
+          })
         setTimeout(() => {
-          setNotificationMessage(null)
-          setIsNotificationSuccess(false)
+          dispatch({type: CLEAR_NOTIFICATION})
         }, 5000)
       } catch (error) {
-        setNotificationMessage('Failed to remove the blog.')
-        setIsNotificationSuccess(false)
+        dispatch({ 
+          type: SET_NOTIFICATION,
+          payload: {
+            message: 'Failed to remove the blog.',
+            isSuccess: false 
+          }
+          })
         setTimeout(() => {
-          setNotificationMessage(null)
-          setIsNotificationSuccess(false)
+          dispatch({type: CLEAR_NOTIFICATION})
         }, 5000)
       }
     }
