@@ -4,10 +4,11 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import Notification from './components/Notification'
 
 const App = () => {
   const [notificationMessage, setNotificationMessage] = useState('')
-  const [isNotificationSuccess, setIsNotificationSuccess] = useState('')
+  const [isNotificationSuccess, setIsNotificationSuccess] = useState(false)
   const [blogs, setBlogs] = useState([])
   const [sortedBlogs, setSortedBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -169,21 +170,10 @@ const App = () => {
     }
   }
 
-  const Notification = ({ message, isSuccess }) => {
-    if (message === null) {
-      return null
-    }
-    const className = isSuccess ? 'success' : 'failure'
-    return <div className={`notification ${className}`}>{message}</div>
-  }
-
   return (
     <div>
       <div>
-        {Notification({
-          message: notificationMessage,
-          isSuccess: isNotificationSuccess,
-        })}
+      <Notification message={notificationMessage} isSuccess={isNotificationSuccess} />
       </div>
 
       <h2>log in to application</h2>

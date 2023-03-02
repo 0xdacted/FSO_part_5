@@ -9,9 +9,6 @@ const Notification = ({ message, isSuccess }) => {
   return <div className={`notification ${className}`}>{message} </div>
 }
 
-const mapStateToProps = (state) => ({
-  message: state.notification.message,
-  isSuccess: state.notification.isSuccess,
-})
 
-export default connect(mapStateToProps)(Notification)
+
+export default Notification
