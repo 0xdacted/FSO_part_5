@@ -1,4 +1,4 @@
-import { SET_NOTIFICATION, CLEAR_NOTIFICATION } from '../actions/actions/notificationActions'
+import { SET_NOTIFICATION, CLEAR_NOTIFICATION } from '../actions/notificationActions'
 const initialState = {
   message: null,
   isSuccess: false
