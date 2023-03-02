@@ -20,11 +20,8 @@ const App = () => {
     user: null,
   })
 
-
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
@@ -42,49 +39,59 @@ const App = () => {
   }, [])
 
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
       const user = await loginService.login({
         username,
         password,
-      });
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
-      blogService.setToken(user.token);
-      setUser(user);
-      setUsername('');
-      setPassword('');
+      })
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
       setNotificationMessage(`Welcome ${user.name}!`)
-      setIsNotificationSuccess(true);
+      setIsNotificationSuccess(true)
       setTimeout(() => {
-        setNotificationMessage(null);
-        setIsNotificationSuccess(false);
-      }, 5000);
+        setNotificationMessage(null)
+        setIsNotificationSuccess(false)
+      }, 5000)
     } catch (exception) {
-      setNotificationMessage('Wrong credentials');
-      setIsNotificationSuccess(false);
+      setNotificationMessage('Wrong credentials')
+      setIsNotificationSuccess(false)
       setTimeout(() => {
-        setNotificationMessage(null);
-        setIsNotificationSuccess(false);
+        setNotificationMessage(null)
+        setIsNotificationSuccess(false)
       }, 5000)
     }
-    console.log('logging in with', username, password);
+    console.log('logging in with', username, password)
   }
 
   const loginForm = () => {
     return (
-    <form id='login-form' onSubmit={handleLogin}>
+      <form id="login-form" onSubmit={handleLogin}>
         <div>
           username
-          <input id='username-input' type='text' value={username} name='Username' 
-          onChange={({ target }) => setUsername(target.value)} 
+          <input
+            id="username-input"
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
           password
-          <input id='password-input' type='password' value={password} name='Password'
-          onChange={({ target }) => setPassword(target.value)}
+          <input
+            id="password-input"
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
           />
-          <button id='login-button' type="submit">login</button>
+          <button id="login-button" type="submit">
+            login
+          </button>
         </div>
       </form>
     )
@@ -97,35 +104,37 @@ const App = () => {
 
   const logoutButton = () => {
     return (
-    <button id="logout-button" onClick={handleLogout}>Log out</button>
+      <button id="logout-button" onClick={handleLogout}>
+        Log out
+      </button>
     )
   }
 
   const addBlog = async (blogObject, user) => {
     try {
-      blogObject.user = user;
-      const returnedBlog = await blogService.create(blogObject);
-      setBlogs(blogs.concat(returnedBlog));
-      setNewBlog({ 
+      blogObject.user = user
+      const returnedBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(returnedBlog))
+      setNewBlog({
         title: '',
         author: '',
         url: '',
         user: null,
-      });
-      setNotificationMessage(`New blog "${returnedBlog.title}" added!`);
-      setIsNotificationSuccess(true);
+      })
+      setNotificationMessage(`New blog "${returnedBlog.title}" added!`)
+      setIsNotificationSuccess(true)
       setTimeout(() => {
-        setNotificationMessage(null);
-        setIsNotificationSuccess(false);
-      }, 5000);
-      return returnedBlog;
+        setNotificationMessage(null)
+        setIsNotificationSuccess(false)
+      }, 5000)
+      return returnedBlog
     } catch (error) {
-      setNotificationMessage('Error adding blog.');
-      setIsNotificationSuccess(false);
+      setNotificationMessage('Error adding blog.')
+      setIsNotificationSuccess(false)
       setTimeout(() => {
-        setNotificationMessage(null);
-        setIsNotificationSuccess(false);
-      }, 5000);
+        setNotificationMessage(null)
+        setIsNotificationSuccess(false)
+      }, 5000)
     }
   }
 
@@ -141,42 +150,42 @@ const App = () => {
   const handleDeleteClick = async (blog) => {
     if (window.confirm(`remove blog ${blog.title} by ${blog.author}?`)) {
       try {
-        await blogService.remove(blog.id);
-        setBlogs(blogs.filter((b) => b.id !== blog.id));
-        setNotificationMessage(`Blog "${blog.title}" removed!`);
-        setIsNotificationSuccess(true);
+        await blogService.remove(blog.id)
+        setBlogs(blogs.filter((b) => b.id !== blog.id))
+        setNotificationMessage(`Blog "${blog.title}" removed!`)
+        setIsNotificationSuccess(true)
         setTimeout(() => {
-          setNotificationMessage(null);
-          setIsNotificationSuccess(false);
-        }, 5000);
+          setNotificationMessage(null)
+          setIsNotificationSuccess(false)
+        }, 5000)
       } catch (error) {
-        setNotificationMessage('Failed to remove the blog.');
-        setIsNotificationSuccess(false);
+        setNotificationMessage('Failed to remove the blog.')
+        setIsNotificationSuccess(false)
         setTimeout(() => {
-          setNotificationMessage(null);
-          setIsNotificationSuccess(false);
-        }, 5000);
+          setNotificationMessage(null)
+          setIsNotificationSuccess(false)
+        }, 5000)
       }
     }
   }
-  
 
   const Notification = ({ message, isSuccess }) => {
     if (message === null) {
       return null
     }
     const className = isSuccess ? 'success' : 'failure'
-    return (
-      <div className={`notification ${className}`}>
-        {message}
-      </div>
-    )
+    return <div className={`notification ${className}`}>{message}</div>
   }
 
   return (
     <div>
-      <div>{Notification({ message: notificationMessage, isSuccess: isNotificationSuccess })}</div>
-  
+      <div>
+        {Notification({
+          message: notificationMessage,
+          isSuccess: isNotificationSuccess,
+        })}
+      </div>
+
       <h2>log in to application</h2>
       {!user && loginForm()}
       <h2>blogs</h2>
@@ -188,29 +197,41 @@ const App = () => {
           <Togglable id="new-blog" buttonLabel="new blog">
             <BlogForm createBlog={addBlog} user={user} />
           </Togglable>
-          
+
           {sortedBlogs.map((blog) => (
-           <div key={blog.id} className="blog">
-           <Blog blog={blog} />
-           <Togglable id={`togglable-${Math.floor(Math.random() * 100000)}`} buttonLabel="view">
-             <div>
-               <div>{blog.url}</div>
-               <div>
-                 likes {blog.likes} <button id="like-click" onClick = {() => handleLikeClick(blog)}>like</button>
-               </div>
-               <div>{blog.user.username}</div> 
-               {blog.user.username === user.username && 
-               <button id="remove-click" onClick = {() => handleDeleteClick(blog)}>remove</button>
-               }
-               
-             </div>
-           </Togglable>
-         </div>
+            <div key={blog.id} className="blog">
+              <Blog blog={blog} />
+              <Togglable
+                id={`togglable-${Math.floor(Math.random() * 100000)}`}
+                buttonLabel="view"
+              >
+                <div>
+                  <div>{blog.url}</div>
+                  <div>
+                    likes {blog.likes}{' '}
+                    <button
+                      id="like-click"
+                      onClick={() => handleLikeClick(blog)}
+                    >
+                      like
+                    </button>
+                  </div>
+                  <div>{blog.user.username}</div>
+                  {blog.user.username === user.username && (
+                    <button
+                      id="remove-click"
+                      onClick={() => handleDeleteClick(blog)}
+                    >
+                      remove
+                    </button>
+                  )}
+                </div>
+              </Togglable>
+            </div>
           ))}
-          
         </div>
       )}
     </div>
-  );
-  }
+  )
+}
 export default App
