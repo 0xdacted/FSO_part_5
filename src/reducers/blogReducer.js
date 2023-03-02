@@ -12,3 +12,26 @@ const blogSlice = createSlice({
   }
 })
 
+export const { setBlogs, addBlog, updateBlog, removeBlog } = blogSlice.actions
+
+export const fetchBlogs = () => async dispatch => {
+  const blogs = await blogService.getAll()
+  dispatch(setBlogs(blogs))
+}
+
+export const createBlog = (blogData) => async dispatch => {
+  const updatedBlog = await blogService.update(blogData.id, blogData)
+  dispatch(updateBlog(updatedBlog))
+}
+
+export const updateBlogInStore = (blogData) => async dispatch => {
+  const updatedBlog = await blogService.update(blogData.id, blogData)
+  dispatch(updateBlog(updatedBlog))
+}
+
+export const deleteBlogFromStore = (blogId) => async dispatch => {
+  await blogService.remove(blogId)
+  dispatch(removeBlog(blogId))
+}
+
+export default blogSlice.reducer
