@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchBlogs())
-  }, [dispatch])
+  }, [dispatch, blogs])
 
   useEffect(() => {
     const sorted = [...blogs].sort((a, b) => b.likes - a.likes)
@@ -123,7 +123,7 @@ const App = () => {
 
   const addBlog = async (blogObject, user) => {
     try {
-      dispatch(addBlog(blogObject))
+      dispatch(createBlog(blogObject))
       setNewBlog({
         title: '',
         author: '',
