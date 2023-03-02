@@ -5,14 +5,13 @@ import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
-import { useDispatch } from 'react-redux'
+import { fetchBlogs, updateBlogInStore, deleteBlogFromStore, createBlog} from './reducers/blogReducer'
+import { useDispatch, useSelector } from 'react-redux'
 import { SET_NOTIFICATION, CLEAR_NOTIFICATION } from './actions/notificationActions'
 
 const App = () => {
-
+  const blogs = useSelector(state => state.blogs)
   const dispatch = useDispatch()
-
-  const [blogs, setBlogs] = useState([])
   const [sortedBlogs, setSortedBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -25,8 +24,8 @@ const App = () => {
   })
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [newBlog])
+    dispatch(fetchBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const sorted = [...blogs].sort((a, b) => b.likes - a.likes)
@@ -124,9 +123,7 @@ const App = () => {
 
   const addBlog = async (blogObject, user) => {
     try {
-      blogObject.user = user
-      const returnedBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(returnedBlog))
+      dispatch(addBlog(blogObject))
       setNewBlog({
         title: '',
         author: '',
@@ -136,14 +133,14 @@ const App = () => {
       dispatch({ 
         type: SET_NOTIFICATION,
         payload: {
-          message: `New blog "${returnedBlog.title}" added!`,
+          message: `New blog "${blogObject.title}" added!`,
           isSuccess: true 
         }
         })
       setTimeout(() => {
         dispatch({type: CLEAR_NOTIFICATION})
       }, 5000)
-      return returnedBlog
+      return blogObject
     } catch (error) {
       dispatch({ 
         type: SET_NOTIFICATION,
@@ -163,15 +160,13 @@ const App = () => {
       ...blog,
       likes: blog.likes + 1,
     }
-    const response = await blogService.update(updatedBlog.id, updatedBlog)
-    setBlogs(blogs.map((b) => (b.id === updatedBlog.id ? response : b)))
+    dispatch(updateBlogInStore(updatedBlog))
   }
 
   const handleDeleteClick = async (blog) => {
     if (window.confirm(`remove blog ${blog.title} by ${blog.author}?`)) {
       try {
-        await blogService.remove(blog.id)
-        setBlogs(blogs.filter((b) => b.id !== blog.id))
+        dispatch(deleteBlogFromStore(blog.id))
         dispatch({ 
           type: SET_NOTIFICATION,
           payload: {

@@ -20,8 +20,8 @@ export const fetchBlogs = () => async dispatch => {
 }
 
 export const createBlog = (blogData) => async dispatch => {
-  const updatedBlog = await blogService.update(blogData.id, blogData)
-  dispatch(updateBlog(updatedBlog))
+  const newBlog = await blogService.create(blogData)
+  dispatch(addBlog(newBlog))
 }
 
 export const updateBlogInStore = (blogData) => async dispatch => {
