@@ -5,10 +5,13 @@ import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
+import { useDispatch } from 'react-redux'
+import { SET_NOTIFICATION, CLEAR_NOTIFICATION } from './actions/notificationActions'
 
 const App = () => {
-  const [notificationMessage, setNotificationMessage] = useState('')
-  const [isNotificationSuccess, setIsNotificationSuccess] = useState(false)
+
+  const dispatch = useDispatch()
+
   const [blogs, setBlogs] = useState([])
   const [sortedBlogs, setSortedBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -122,19 +125,27 @@ const App = () => {
         url: '',
         user: null,
       })
-      setNotificationMessage(`New blog "${returnedBlog.title}" added!`)
-      setIsNotificationSuccess(true)
+      dispatch({ 
+        type: SET_NOTIFICATION,
+        payload: {
+          message: `New blog "${returnedBlog.title}" added!`,
+          isSuccess: true 
+        }
+        })
       setTimeout(() => {
-        setNotificationMessage(null)
-        setIsNotificationSuccess(false)
+        dispatch({type: CLEAR_NOTIFICATION})
       }, 5000)
       return returnedBlog
     } catch (error) {
-      setNotificationMessage('Error adding blog.')
-      setIsNotificationSuccess(false)
+      dispatch({ 
+        type: SET_NOTIFICATION,
+        payload: {
+          message: `Error adding blog`,
+          isSuccess: false 
+        }
+        })
       setTimeout(() => {
-        setNotificationMessage(null)
-        setIsNotificationSuccess(false)
+        dispatch({type: CLEAR_NOTIFICATION})
       }, 5000)
     }
   }
@@ -173,7 +184,7 @@ const App = () => {
   return (
     <div>
       <div>
-      <Notification message={notificationMessage} isSuccess={isNotificationSuccess} />
+      <Notification />
       </div>
 
       <h2>log in to application</h2>
