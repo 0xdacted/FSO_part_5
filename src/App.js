@@ -14,6 +14,7 @@ import {
   BrowserRouter as Router,
   Routes, Route, Link
 } from 'react-router-dom'
+import User from './components/User'
 
 const App = () => {
   const blogs = useSelector(state => state.blogs)
@@ -32,7 +33,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchBlogs())
-  }, [dispatch, blogs])
+  }, [dispatch])
 
   useEffect(() => {
     const sorted = [...blogs].sort((a, b) => b.likes - a.likes)
@@ -247,10 +248,13 @@ const App = () => {
                   )}
                 </div>
               </Togglable>
+             
             </div>
+            
           ))}
         </div>
       )}
+       <UserList></UserList>
     </div>
   )
 }

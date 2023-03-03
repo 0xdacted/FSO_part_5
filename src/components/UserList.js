@@ -7,19 +7,21 @@ import { useEffect } from 'react'
 const UserList = () => {
   const dispatch = useDispatch()
   const users = useSelector(state => state.users)
-
+  console.log(users)
   useEffect(() => {
     dispatch(fetchUsers())
-  }, [dispatch, users])
+  }, [dispatch])
 
 
   return (
     <div>
-    <h2>Users</h2>         <em>blogs created</em>
-      {users.map((user) => (
+    <h2>Users</h2>         
+      {users && users.map((user) => (
+        
       <User key={user.id} user={user} />
-      ))}
+       ))}
     </div>
+
   )
 }
 

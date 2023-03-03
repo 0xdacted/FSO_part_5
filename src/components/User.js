@@ -2,7 +2,7 @@ const User = ({ user }) => {
 
   return (
     <div>
-        {user.name}      {user.blogs.length} 
+        {user.username} has created {user.blogs.length} blog(s)
     </div>
   )
 }
