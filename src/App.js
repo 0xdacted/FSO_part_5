@@ -189,6 +189,10 @@ const App = () => {
         {users && users.map(user => (
           <Route key={user.id} path={`/users/${user.id}`} element={<UserBlogs user={user} />} />
         ))}
+         <Route path='/blogs' element={<UserList/>} />
+        {blogs && blogs.map(blog => (
+          <Route key={blog.id} path={`/blogs/${blog.id}`} element={<Blog blog={blog} />} />
+        ))}
         <Route path='/' element={
         <div>
              {user && ( 

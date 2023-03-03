@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom"
+
 const Blog = ({ blog }) => (
   <div>
-    {blog.title} {blog.author}
+   <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> {blog.author}
   </div>
 )
 
