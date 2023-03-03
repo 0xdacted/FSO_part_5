@@ -148,20 +148,15 @@ const App = () => {
     }
   }
 
-
-
   return (
-    
     
     <Router>
     <div>
       <h2>blogs</h2>
-       <p>
-          {user.username} logged in {logoutButton()}
-        </p>
-      <div>
       <Notification />
+      <div>
       </div>
+
 
       {!user && <h2>log in to application</h2>}
       {!user && loginForm()}
@@ -177,8 +172,12 @@ const App = () => {
         ))}
         <Route path='/' element={
         <div>
+          
              {user && ( 
         <div>
+          <p>
+          {user.username} logged in {logoutButton()}
+          </p>
          
           <Togglable id="new-blog" buttonLabel="new blog">
             <BlogForm createBlog={addBlog} currUser={user} />

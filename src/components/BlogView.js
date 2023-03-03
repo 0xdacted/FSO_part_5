@@ -33,9 +33,10 @@ const BlogView = ({ blog, currUser }) => {
   return (
     <div>
       <h2>{blog.title}</h2>
-    
                 <div>
-                  <div>{blog.url}</div>
+                  <div>
+                    <a href={blog.url}>{blog.url}</a>
+                    </div>
                   <div>
                     likes {blog.likes}{' '}
                     <button
