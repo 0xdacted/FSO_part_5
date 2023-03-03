@@ -63,12 +63,12 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-      dispatch(setNotification(`Welcome ${user.username}`, true))
-      setTimeout(() => {
+      dispatch(setNotification({ message:`Welcome ${user.username}`, isSuccess: true }))
+      setTimeout( async () => {
         dispatch(clearNotification())
       }, 5000)
     } catch (exception) {
-      dispatch(setNotification('Wrong Credentials'), false)
+      dispatch(setNotification({ message: 'Wrong Credentials', isSuccess: false }))
       setTimeout(() => {
         dispatch(clearNotification())
       }, 5000)
@@ -129,14 +129,14 @@ const App = () => {
         url: '',
         user: null,
       })
-      dispatch(setNotification(`New blog "${blogObject.title}" added!`, true))
+      dispatch(setNotification({ message: `New blog "${blogObject.title}" added!`, isSuccess: true }))
       setTimeout(() => {
         dispatch(clearNotification())
       }, 5000)
       dispatch(fetchBlogs())
       return blogObject
     } catch (error) {
-      dispatch(setNotification(`Error adding blog`, false))
+      dispatch(setNotification({ message: `Error adding blog`, isSuccess: false }))
       setTimeout(() => {
         dispatch(clearNotification())
       }, 5000)
@@ -155,12 +155,12 @@ const App = () => {
     if (window.confirm(`remove blog ${blog.title} by ${blog.author}?`)) {
       try {
         dispatch(deleteBlogFromStore(blog.id))
-        dispatch(setNotification(`Blog "${blog.title}" removed!`, true))
+        dispatch(setNotification({ message: `Blog "${blog.title}" removed!`, isSuccess: true }))
         setTimeout(() => {
          dispatch(clearNotification())
         }, 5000)
       } catch (error) {
-        dispatch(setNotification('Failed to remove the blog.', false))
+        dispatch(setNotification({ message: 'Failed to remove the blog.', isSuccess: false }))
         setTimeout(() => {
           dispatch(clearNotification())
         }, 5000)
@@ -169,6 +169,7 @@ const App = () => {
   }
 
   return (
+    
     <Router>
     <div>
       <div>
