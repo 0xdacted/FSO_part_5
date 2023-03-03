@@ -7,6 +7,7 @@ import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import { setNotification, clearNotification } from './reducers/notificationReducer'
 import UserList from './components/UserList'
+import UserBlogs from './components/UserBlogs'
 import { fetchBlogs, updateBlogInStore, deleteBlogFromStore, createBlog} from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from './reducers/loginReducer'
@@ -14,9 +15,11 @@ import {
   BrowserRouter as Router,
   Routes, Route, Link, Outlet
 } from 'react-router-dom'
+import users from './services/users'
 
 const App = () => {
   const blogs = useSelector(state => state.blogs)
+  const users = useSelector(state => state.users)
   const loggedUser = useSelector(state => state.logins)
   const dispatch = useDispatch()
   const [sortedBlogs, setSortedBlogs] = useState([])
@@ -227,6 +230,9 @@ const App = () => {
     </div>
       <Routes>
         <Route path='/users' element={<UserList/>} />
+        {users && users.map(user => (
+          <Route key={user.id} path={`/users/${user.id}`} element={<UserBlogs user={user} />} />
+        ))}
       </Routes>
     </Router>
   )
