@@ -227,7 +227,6 @@ const App = () => {
     </div>
       <Routes>
         <Route path='/users' element={<UserList/>} />
-
       </Routes>
     </Router>
   )
