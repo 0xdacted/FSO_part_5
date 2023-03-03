@@ -4,7 +4,6 @@ import { setNotification, clearNotification } from '../reducers/notificationRedu
 
 const BlogView = ({ blog, currUser }) => {
   const dispatch = useDispatch()
-  const loggedUser = useSelector(state => state.logins)
 
   const handleLikeClick = async (blog) => {
     const updatedBlog = {

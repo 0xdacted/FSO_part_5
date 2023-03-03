@@ -6,6 +6,7 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import BlogView from './components/BlogView'
+import Navbar from './components/Navbar'
 import { setNotification, clearNotification } from './reducers/notificationReducer'
 import UserList from './components/UserList'
 import UserBlogs from './components/UserBlogs'
@@ -156,10 +157,9 @@ const App = () => {
       <Notification />
       <div>
       </div>
-
-
       {!user && <h2>log in to application</h2>}
       {!user && loginForm()}
+      {user && <Navbar user={user} handleLogout={handleLogout}/>}
       
     </div>
       <Routes>
@@ -170,6 +170,7 @@ const App = () => {
         {blogs && blogs.map(blog => (
           <Route key={blog.id} path={`/blogs/${blog.id}`} element={<BlogView blog={blog} user={user} />} />
         ))}
+        <Route path='/new-blog' element={ <BlogForm createBlog={addBlog} currUser={user} />}/>
         <Route path='/' element={
         <div>
           
@@ -179,10 +180,6 @@ const App = () => {
           {user.username} logged in {logoutButton()}
           </p>
          
-          <Togglable id="new-blog" buttonLabel="new blog">
-            <BlogForm createBlog={addBlog} currUser={user} />
-          </Togglable>
-
           {sortedBlogs.map((blog) => (
             <div key={blog.id} className="blog">
               <Blog blog={blog} />
