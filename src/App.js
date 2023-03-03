@@ -202,6 +202,7 @@ const App = () => {
   }
 
   return (
+    <Router>
     <div>
       <div>
       <Notification />
@@ -254,8 +255,11 @@ const App = () => {
           ))}
         </div>
       )}
-       <UserList></UserList>
     </div>
+      <Routes>
+        <Route path='/users' element={<UserList/>} />
+      </Routes>
+    </Router>
   )
 }
 export default App
