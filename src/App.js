@@ -32,19 +32,22 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchBlogs())
-  }, [user])
+  }, [])
 
   useEffect(() => {
     const sorted = [...blogs].sort((a, b) => b.likes - a.likes)
     setSortedBlogs(sorted)
-  }, [newBlog])
+  }, [blogs])
 
   useEffect(() => {
-      if (loggedUser) {
-      setUser(loggedUser)
-      blogService.setToken(loggedUser.token)
-      }
-  }, [loggedUser])
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+  
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -126,6 +129,7 @@ const App = () => {
         url: '',
         user: null,
       })
+      dispatch(fetchBlogs())
       dispatch(setNotification(`New blog "${blogObject.title}" added!`, true))
       setTimeout(() => {
         dispatch(clearNotification())
