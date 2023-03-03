@@ -5,6 +5,7 @@ import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
+import BlogView from './components/BlogView'
 import { setNotification, clearNotification } from './reducers/notificationReducer'
 import UserList from './components/UserList'
 import UserBlogs from './components/UserBlogs'
@@ -147,30 +148,7 @@ const App = () => {
     }
   }
 
-  const handleLikeClick = async (blog) => {
-    const updatedBlog = {
-      ...blog,
-      likes: blog.likes + 1,
-    }
-    dispatch(updateBlogInStore(updatedBlog))
-  }
 
-  const handleDeleteClick = async (blog) => {
-    if (window.confirm(`remove blog ${blog.title} by ${blog.author}?`)) {
-      try {
-        dispatch(deleteBlogFromStore(blog.id))
-        dispatch(setNotification({ message: `Blog "${blog.title}" removed!`, isSuccess: true }))
-        setTimeout(() => {
-         dispatch(clearNotification())
-        }, 5000)
-      } catch (error) {
-        dispatch(setNotification({ message: 'Failed to remove the blog.', isSuccess: false }))
-        setTimeout(() => {
-          dispatch(clearNotification())
-        }, 5000)
-      }
-    }
-  }
 
   return (
     
@@ -189,9 +167,8 @@ const App = () => {
         {users && users.map(user => (
           <Route key={user.id} path={`/users/${user.id}`} element={<UserBlogs user={user} />} />
         ))}
-         <Route path='/blogs' element={<UserList/>} />
         {blogs && blogs.map(blog => (
-          <Route key={blog.id} path={`/blogs/${blog.id}`} element={<Blog blog={blog} />} />
+          <Route key={blog.id} path={`/blogs/${blog.id}`} element={<BlogView blog={blog} />} />
         ))}
         <Route path='/' element={
         <div>
@@ -208,33 +185,6 @@ const App = () => {
           {sortedBlogs.map((blog) => (
             <div key={blog.id} className="blog">
               <Blog blog={blog} />
-              <Togglable
-                id={`togglable-${Math.floor(Math.random() * 100000)}`}
-                buttonLabel="view"
-              >
-                <div>
-                  <div>{blog.url}</div>
-                  <div>
-                    likes {blog.likes}{' '}
-                    <button
-                      id="like-click"
-                      onClick={() => handleLikeClick(blog)}
-                    >
-                      like
-                    </button>
-                  </div>
-                  <div>{blog.user.username}</div>
-                  {blog.user.username === user.username && (
-                    <button
-                      id="remove-click"
-                      onClick={() => handleDeleteClick(blog)}
-                    >
-                      remove
-                    </button>
-                  )}
-                </div>
-              </Togglable>
-             
             </div>
             
           ))}
