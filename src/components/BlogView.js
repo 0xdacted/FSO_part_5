@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { updateBlogInStore, deleteBlogFromStore } from '../reducers/blogReducer'
 import { setNotification, clearNotification } from '../reducers/notificationReducer'
 
-const BlogView = ({ blog }) => {
+const BlogView = ({ blog, currUser }) => {
   const dispatch = useDispatch()
   const loggedUser = useSelector(state => state.logins)
 
@@ -46,7 +46,7 @@ const BlogView = ({ blog }) => {
                     </button>
                   </div>
                   <div>{blog.user.username}</div>
-                  { loggedUser && blog.user.username === loggedUser.username && (
+                  { currUser && blog.user.username === currUser.username && (
                     <button
                       id="remove-click"
                       onClick={() => handleDeleteClick(blog)}

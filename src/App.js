@@ -168,7 +168,7 @@ const App = () => {
           <Route key={user.id} path={`/users/${user.id}`} element={<UserBlogs user={user} />} />
         ))}
         {blogs && blogs.map(blog => (
-          <Route key={blog.id} path={`/blogs/${blog.id}`} element={<BlogView blog={blog} />} />
+          <Route key={blog.id} path={`/blogs/${blog.id}`} element={<BlogView blog={blog} user={user} />} />
         ))}
         <Route path='/' element={
         <div>
@@ -179,7 +179,7 @@ const App = () => {
           </p>
           <h2>blogs</h2>
           <Togglable id="new-blog" buttonLabel="new blog">
-            <BlogForm createBlog={addBlog} user={user} />
+            <BlogForm createBlog={addBlog} currUser={user} />
           </Togglable>
 
           {sortedBlogs.map((blog) => (
