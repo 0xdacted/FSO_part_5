@@ -122,18 +122,18 @@ const App = () => {
 
   const addBlog = async (blogObject, user) => {
     try {
-      dispatch(createBlog(blogObject))
+      await dispatch(createBlog(blogObject))
       setNewBlog({
         title: '',
         author: '',
         url: '',
         user: null,
       })
-      dispatch(fetchBlogs())
       dispatch(setNotification(`New blog "${blogObject.title}" added!`, true))
       setTimeout(() => {
         dispatch(clearNotification())
       }, 5000)
+      dispatch(fetchBlogs())
       return blogObject
     } catch (error) {
       dispatch(setNotification(`Error adding blog`, false))
