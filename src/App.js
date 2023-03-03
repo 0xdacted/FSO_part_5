@@ -5,16 +5,15 @@ import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
+import { setNotification, clearNotification } from './reducers/notificationReducer'
 import UserList from './components/UserList'
 import { fetchBlogs, updateBlogInStore, deleteBlogFromStore, createBlog} from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { SET_NOTIFICATION, CLEAR_NOTIFICATION } from './actions/notificationActions'
 import { loginUser } from './reducers/loginReducer'
 import {
   BrowserRouter as Router,
-  Routes, Route, Link
+  Routes, Route, Link, Outlet
 } from 'react-router-dom'
-import User from './components/User'
 
 const App = () => {
   const blogs = useSelector(state => state.blogs)
@@ -33,15 +32,14 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchBlogs())
-  }, [dispatch])
+  }, [user])
 
   useEffect(() => {
     const sorted = [...blogs].sort((a, b) => b.likes - a.likes)
     setSortedBlogs(sorted)
-  }, [blogs])
+  }, [newBlog])
 
   useEffect(() => {
-    console.log(loggedUser)
       if (loggedUser) {
       setUser(loggedUser)
       blogService.setToken(loggedUser.token)
@@ -62,26 +60,14 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-      dispatch({ 
-        type: SET_NOTIFICATION,
-        payload: {
-          message: `Welcome ${user.name}.`,
-          isSuccess: true 
-        }
-        })
+      dispatch(setNotification(`Welcome ${user.username}`, true))
       setTimeout(() => {
-        dispatch({type: CLEAR_NOTIFICATION})
+        dispatch(clearNotification())
       }, 5000)
     } catch (exception) {
-      dispatch({ 
-        type: SET_NOTIFICATION,
-        payload: {
-          message: 'Wrong credentials.',
-          isSuccess: false 
-        }
-        })
+      dispatch(setNotification('Wrong Credentials'), false)
       setTimeout(() => {
-        dispatch({type: CLEAR_NOTIFICATION})
+        dispatch(clearNotification())
       }, 5000)
     }
     console.log('logging in with', username, password)
@@ -119,6 +105,7 @@ const App = () => {
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
+
     window.location.reload()
   }
 
@@ -139,27 +126,15 @@ const App = () => {
         url: '',
         user: null,
       })
-      dispatch({ 
-        type: SET_NOTIFICATION,
-        payload: {
-          message: `New blog "${blogObject.title}" added!`,
-          isSuccess: true 
-        }
-        })
+      dispatch(setNotification(`New blog "${blogObject.title}" added!`, true))
       setTimeout(() => {
-        dispatch({type: CLEAR_NOTIFICATION})
+        dispatch(clearNotification())
       }, 5000)
       return blogObject
     } catch (error) {
-      dispatch({ 
-        type: SET_NOTIFICATION,
-        payload: {
-          message: `Error adding blog`,
-          isSuccess: false 
-        }
-        })
+      dispatch(setNotification(`Error adding blog`, false))
       setTimeout(() => {
-        dispatch({type: CLEAR_NOTIFICATION})
+        dispatch(clearNotification())
       }, 5000)
     }
   }
@@ -176,26 +151,14 @@ const App = () => {
     if (window.confirm(`remove blog ${blog.title} by ${blog.author}?`)) {
       try {
         dispatch(deleteBlogFromStore(blog.id))
-        dispatch({ 
-          type: SET_NOTIFICATION,
-          payload: {
-            message: `Blog "${blog.title}" removed!`,
-            isSuccess: true 
-          }
-          })
+        dispatch(setNotification(`Blog "${blog.title}" removed!`, true))
         setTimeout(() => {
-          dispatch({type: CLEAR_NOTIFICATION})
+         dispatch(clearNotification())
         }, 5000)
       } catch (error) {
-        dispatch({ 
-          type: SET_NOTIFICATION,
-          payload: {
-            message: 'Failed to remove the blog.',
-            isSuccess: false 
-          }
-          })
+        dispatch(setNotification('Failed to remove the blog.', false))
         setTimeout(() => {
-          dispatch({type: CLEAR_NOTIFICATION})
+          dispatch(clearNotification())
         }, 5000)
       }
     }
@@ -208,14 +171,15 @@ const App = () => {
       <Notification />
       </div>
 
-      <h2>log in to application</h2>
+      {!user && <h2>log in to application</h2>}
       {!user && loginForm()}
-      <h2>blogs</h2>
-      {user && (
+      
+      {user && ( 
         <div>
           <p>
             {user.username} logged in {logoutButton()}
           </p>
+          <h2>blogs</h2>
           <Togglable id="new-blog" buttonLabel="new blog">
             <BlogForm createBlog={addBlog} user={user} />
           </Togglable>
@@ -258,6 +222,7 @@ const App = () => {
     </div>
       <Routes>
         <Route path='/users' element={<UserList/>} />
+
       </Routes>
     </Router>
   )
