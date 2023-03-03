@@ -8,9 +8,11 @@ import Notification from './components/Notification'
 import { fetchBlogs, updateBlogInStore, deleteBlogFromStore, createBlog} from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { SET_NOTIFICATION, CLEAR_NOTIFICATION } from './actions/notificationActions'
+import { loginUser } from './reducers/loginReducer'
 
 const App = () => {
   const blogs = useSelector(state => state.blogs)
+  const loggedUser = useSelector(state => state.logins)
   const dispatch = useDispatch()
   const [sortedBlogs, setSortedBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -33,13 +35,12 @@ const App = () => {
   }, [blogs])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
+    console.log(loggedUser)
+      if (loggedUser) {
+      setUser(loggedUser)
+      blogService.setToken(loggedUser.token)
+      }
+  }, [loggedUser])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -49,7 +50,8 @@ const App = () => {
         password,
       })
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-      
+      dispatch(loginUser(user))
+
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
