@@ -152,8 +152,13 @@ const App = () => {
 
   return (
     
+    
     <Router>
     <div>
+      <h2>blogs</h2>
+       <p>
+          {user.username} logged in {logoutButton()}
+        </p>
       <div>
       <Notification />
       </div>
@@ -174,10 +179,7 @@ const App = () => {
         <div>
              {user && ( 
         <div>
-          <p>
-            {user.username} logged in {logoutButton()}
-          </p>
-          <h2>blogs</h2>
+         
           <Togglable id="new-blog" buttonLabel="new blog">
             <BlogForm createBlog={addBlog} currUser={user} />
           </Togglable>
