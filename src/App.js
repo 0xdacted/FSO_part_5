@@ -18,8 +18,9 @@ import {
 import users from './services/users'
 
 const App = () => {
-  const blogs = useSelector(state => state.blogs)
   const users = useSelector(state => state.users)
+
+  const blogs = useSelector(state => state.blogs)
   const loggedUser = useSelector(state => state.logins)
   const dispatch = useDispatch()
   const [sortedBlogs, setSortedBlogs] = useState([])
@@ -182,7 +183,15 @@ const App = () => {
       {!user && <h2>log in to application</h2>}
       {!user && loginForm()}
       
-      {user && ( 
+    </div>
+      <Routes>
+        <Route path='/users' element={<UserList/>} />
+        {users && users.map(user => (
+          <Route key={user.id} path={`/users/${user.id}`} element={<UserBlogs user={user} />} />
+        ))}
+        <Route path='/' element={
+        <div>
+             {user && ( 
         <div>
           <p>
             {user.username} logged in {logoutButton()}
@@ -227,12 +236,9 @@ const App = () => {
           ))}
         </div>
       )}
-    </div>
-      <Routes>
-        <Route path='/users' element={<UserList/>} />
-        {users && users.map(user => (
-          <Route key={user.id} path={`/users/${user.id}`} element={<UserBlogs user={user} />} />
-        ))}
+        </div>
+        }
+        />
       </Routes>
     </Router>
   )
