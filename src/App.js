@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SET_NOTIFICATION, CLEAR_NOTIFICATION } from './actions/notificationActions'
 import { loginUser } from './reducers/loginReducer'
 import {
-  BrowserRouter as Router.
+  BrowserRouter as Router,
   Routes, Route, Link
 } from 'react-router-dom'
 
