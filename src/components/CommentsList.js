@@ -1,10 +1,14 @@
 import Comment from './Comment'
 
 const CommentsList = ( {comments} ) => {
+  console.log(comments)
   return (
     <div>
     {comments.map(comment => (
-      <Comment key={comment.id} comment={comment} />
+     
+      <div key={comment.id}>
+        <Comment comment={comment} />
+      </div>
     ))}
     </div>
   )

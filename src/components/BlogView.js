@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
-import { updateBlogInStore, deleteBlogFromStore, addComment } from '../reducers/blogReducer'
+import { updateBlogInStore, deleteBlogFromStore, addCommentToBlog } from '../reducers/blogReducer'
 import { setNotification, clearNotification } from '../reducers/notificationReducer'
 import { useState } from 'react'
+import CommentsList from './CommentsList'
 
 
 const BlogView = ({ blog, currUser }) => {
@@ -10,7 +11,7 @@ const BlogView = ({ blog, currUser }) => {
 
   const handleCommentSubmit = async (event) => {
     event.preventDefault()
-    dispatch(addComment(blog.id, commentText))
+    dispatch(addCommentToBlog(blog.id, commentText))
     setCommentText('')
   }
 
@@ -66,9 +67,8 @@ const BlogView = ({ blog, currUser }) => {
                 </div>
       <h3>comments</h3>
       <ul>
-        {blog.comments.map((comment) => (
-          <li key={comment.id}>{comment.text}</li>
-        ))}
+        {console.log(blog.comments)}
+        {blog.comments && <CommentsList comments={blog.comments} /> }
       </ul>
 
         <form onSubmit={handleCommentSubmit}>
