@@ -1,9 +1,16 @@
-import { useDispatch, useSelector } from "react-redux"
-import { updateBlogInStore, deleteBlogFromStore } from '../reducers/blogReducer'
+import { useDispatch, useSelector, useState } from "react-redux"
+import { updateBlogInStore, deleteBlogFromStore, addComment } from '../reducers/blogReducer'
 import { setNotification, clearNotification } from '../reducers/notificationReducer'
+
 
 const BlogView = ({ blog, currUser }) => {
   const dispatch = useDispatch()
+  const [commentText, setCommentText] = useState('')
+
+  const handleCommentSubmit = async (event) => {
+    event.preventDefault()
+    dispatch(addComment(blog.id, commentText))
+    setCommentText('')
 
   const handleLikeClick = async (blog) => {
     const updatedBlog = {
@@ -55,8 +62,13 @@ const BlogView = ({ blog, currUser }) => {
                     </button>
                   )}
                 </div>
+      <h3>comments</h3>
+        <form onSubmit={handleCommentSubmit}>
+          <input type="text" value={commentText} onChange={(event) => setCommentText(event.target.value)} />
+          <button type="submit">add comment</button>
+        </form>
     </div>
   )
-}
+}}
 
 export default BlogView
